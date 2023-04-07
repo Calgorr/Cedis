@@ -27,3 +27,22 @@ func TestCache_SetAndGet(t *testing.T) {
 		t.Errorf("Expected 'nonexistent' to not exist in cache")
 	}
 }
+
+func TestCache_SetWithExpiration(t *testing.T) {
+	c := database.NewCache()
+
+	c.Set("foo", "bar", time.Millisecond*100)
+	_, exists := c.Get("foo")
+
+	if !exists {
+		t.Errorf("Expected 'foo' to exist in cache")
+	}
+
+	time.Sleep(time.Millisecond * 200)
+
+	_, exists = c.Get("foo")
+
+	if exists {
+		t.Errorf("Expected 'foo' to not exist in cache")
+	}
+}
