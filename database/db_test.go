@@ -46,3 +46,18 @@ func TestCache_SetWithExpiration(t *testing.T) {
 		t.Errorf("Expected 'foo' to not exist in cache")
 	}
 }
+
+func TestCache_Cleanup(t *testing.T) {
+	c := database.NewCache()
+
+	c.Set("foo", "bar", time.Minute)
+
+	// wait for cleanup goroutine to run
+	time.Sleep(time.Minute + time.Millisecond*100)
+
+	_, exists := c.Get("foo")
+
+	if exists {
+		t.Errorf("Expected 'foo' to not exist in cache after cleanup")
+	}
+}
