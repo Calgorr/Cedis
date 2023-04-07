@@ -47,3 +47,17 @@ func (c *Cache) Set(key string, v interface{}, ttl time.Duration) {
 		expirationDate: expirationDate,
 	}
 }
+
+func (c *Cache) Get(key string) (interface{}, bool) {
+	c.RLock()
+	defer c.RUnlock()
+	v, ok := c.data[key]
+	if !ok {
+		return nil, false
+	}
+	if !v.expirationDate.IsZero() && time.Now().Compare(v.expirationDate) == 1 {
+		return nil, false
+	}
+	return v.value, true
+
+}
