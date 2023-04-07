@@ -59,5 +59,4 @@ func (c *Cache) Get(key string) (interface{}, bool) {
 		return nil, false
 	}
 	return v.value, true
-
 }
