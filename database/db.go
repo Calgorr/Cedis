@@ -34,3 +34,16 @@ func (c *Cache) startCleanup() {
 		c.Unlock()
 	}
 }
+
+func (c *Cache) Set(key string, v interface{}, ttl time.Duration) {
+	c.Lock()
+	defer c.Unlock()
+	var expirationDate time.Time
+	if ttl.Milliseconds() > 0 {
+		expirationDate = time.Now().Add(ttl)
+	}
+	c.data[key] = value{
+		value:          v,
+		expirationDate: expirationDate,
+	}
+}
