@@ -3,15 +3,15 @@ package container
 import "github.com/Calgorr/Cedis/database"
 
 type Container struct {
-	databases       []*database.Cache
-	currentDatabase *database.Cache
+	Databases       []*database.Cache
+	CurrentDatabase *database.Cache
 }
 
 var container *Container
 
 func NewContainer() *Container {
 	if container == nil {
-		container = &Container{databases: nil, currentDatabase: nil}
+		container = &Container{Databases: nil, CurrentDatabase: nil}
 		return container
 	}
 	return container
@@ -19,9 +19,9 @@ func NewContainer() *Container {
 
 func (c *Container) AddDatabase(id int) {
 	db := database.NewCache(id)
-	c.databases = append(c.databases, db)
+	c.Databases = append(c.Databases, db)
 }
 
 func (c *Container) GetAllDatabases() []*database.Cache {
-	return c.databases
+	return c.Databases
 }

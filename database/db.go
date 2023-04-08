@@ -75,7 +75,7 @@ func (c *Cache) Delete(key string) int {
 
 func (c *Cache) KeysMatchesPatern(pattern string) ([]string, error) {
 	var keys []string
-	for key, _ := range c.data {
+	for key := range c.data {
 		ok, err := regexp.MatchString(pattern, key)
 		if err != nil {
 			return nil, err

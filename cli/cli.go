@@ -2,8 +2,11 @@ package cli
 
 import (
 	"bufio"
+	"errors"
+	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/Calgorr/Cedis/container"
 )
@@ -23,11 +26,20 @@ func (p *Parser) StartProgrammingLoop() error {
 		if err != nil {
 			return err
 		}
-		p.parse(strings.TrimSpace(input))
+		fmt.Println(p.parse(strings.TrimSpace(input)))
 	}
-	return nil
 }
 
 func (p *Parser) parse(input string) error {
+	cmd := strings.ToLower(strings.Split(input, " ")[0])
 
+	switch cmd {
+	case "set":
+		if p.redis.CurrentDatabase == nil {
+			return errors.New("No Database selected")
+		}
+		key, value, Duration := strings.Split(input, "")[0], strings.Split(input, "")[1], strings.Split(input, "")[2]
+		ttl, _ := time.ParseDuration(Duration)
+		p.redis.CurrentDatabase.Set(key, value, ttl)
+	}
 }
