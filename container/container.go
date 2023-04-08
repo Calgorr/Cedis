@@ -7,11 +7,21 @@ type Container struct {
 	currentDatabase *database.Cache
 }
 
+var container *Container
+
 func NewContainer() *Container {
-	return &Container{databases: nil, currentDatabase: nil}
+	if container == nil {
+		container = &Container{databases: nil, currentDatabase: nil}
+		return container
+	}
+	return container
 }
 
 func (c *Container) AddDatabase(id int) {
 	db := database.NewCache(id)
 	c.databases = append(c.databases, db)
+}
+
+func (c *Container) GetAllDatabases() []*database.Cache {
+	return c.databases
 }
