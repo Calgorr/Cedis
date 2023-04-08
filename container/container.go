@@ -12,5 +12,6 @@ func NewContainer() *Container {
 }
 
 func (c *Container) AddDatabase(id int) {
-	database.NewCache()
+	db := database.NewCache(id)
+	c.databases = append(c.databases, db)
 }
