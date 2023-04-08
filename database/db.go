@@ -8,6 +8,7 @@ import (
 
 type Cache struct {
 	sync.RWMutex
+	id   int
 	data map[string]value
 }
 
@@ -16,8 +17,8 @@ type value struct {
 	expirationDate time.Time
 }
 
-func NewCache() *Cache {
-	cache := &Cache{data: make(map[string]value)}
+func NewCache(id int) *Cache {
+	cache := &Cache{data: make(map[string]value), id: id}
 	go cache.startCleanup()
 	return cache
 }

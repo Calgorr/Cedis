@@ -10,3 +10,7 @@ type Container struct {
 func NewContainer() *Container {
 	return &Container{databases: nil, currentDatabase: nil}
 }
+
+func (c *Container) AddDatabase(id int) {
+	database.NewCache()
+}
