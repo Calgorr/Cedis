@@ -1,6 +1,7 @@
 package database
 
 import (
+	"regexp"
 	"sync"
 	"time"
 )
@@ -69,4 +70,17 @@ func (c *Cache) Delete(key string) int {
 	}
 	delete(c.data, key)
 	return 1
+}
+
+func (c *Cache) KeysMatchesPatern(pattern string) ([]string, error) {
+	var keys []string
+	for key, _ := range c.data {
+		ok, err := regexp.MatchString(pattern, key)
+		if err != nil {
+			return nil, err
+		} else if ok {
+			keys = append(keys, key)
+		}
+	}
+	return keys, nil
 }
