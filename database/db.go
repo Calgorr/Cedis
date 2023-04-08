@@ -60,3 +60,13 @@ func (c *Cache) Get(key string) (interface{}, bool) {
 	}
 	return v.value, true
 }
+
+func (c *Cache) Delete(key string) int {
+	c.Lock()
+	defer c.Unlock()
+	if _, exists := c.data[key]; !exists {
+		return 0
+	}
+	delete(c.data, key)
+	return 1
+}
