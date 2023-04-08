@@ -10,7 +10,7 @@ import (
 )
 
 func TestCache_SetAndGet(t *testing.T) {
-	c := database.NewCache()
+	c := database.NewCache(0)
 
 	c.Set("foo", "bar", time.Minute)
 	value, exists := c.Get("foo")
@@ -31,7 +31,7 @@ func TestCache_SetAndGet(t *testing.T) {
 }
 
 func TestCache_SetWithExpiration(t *testing.T) {
-	c := database.NewCache()
+	c := database.NewCache(0)
 
 	c.Set("foo", "bar", time.Millisecond*100)
 	_, exists := c.Get("foo")
@@ -50,7 +50,7 @@ func TestCache_SetWithExpiration(t *testing.T) {
 }
 
 func TestCache_Cleanup(t *testing.T) {
-	c := database.NewCache()
+	c := database.NewCache(0)
 
 	c.Set("foo", "bar", time.Minute)
 
@@ -65,7 +65,7 @@ func TestCache_Cleanup(t *testing.T) {
 }
 
 func TestCache_ConcurrentAccess(t *testing.T) {
-	c := database.NewCache()
+	c := database.NewCache(0)
 	var wg sync.WaitGroup
 
 	// set 1000 keys with a TTL of 100ms concurrently
