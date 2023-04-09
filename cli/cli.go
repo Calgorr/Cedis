@@ -68,5 +68,12 @@ func (p *Parser) parse(input string) error {
 			return err
 		}
 		fmt.Println(keys)
+	case "select":
+		if p.redis.CurrentDatabase == nil {
+			return errors.New("No Database selected")
+		}
+		db, _ := strconv.Atoi(strings.Split(input, " ")[1])
+		p.redis.CurrentDatabase = p.redis.GetAllDatabases()[db]
+
 
 }
