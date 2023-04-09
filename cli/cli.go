@@ -75,5 +75,11 @@ func (p *Parser) parse(input string) error {
 		db, _ := strconv.Atoi(strings.Split(input, " ")[1])
 		p.redis.CurrentDatabase = p.redis.GetAllDatabases()[db]
 
+	case "exit":
+		os.Exit(0)
+	default:
+		return errors.New("invalid command")
+	}
+	return nil
 
 }
