@@ -23,7 +23,7 @@ func (c *Container) AddDatabase(id int) {
 }
 
 func (c *Container) GetDatabase(id int) *database.Cache {
-	if c.Databases[id] == nil {
+	if len(c.Databases) > id+1 {
 		c.AddDatabase(id)
 	}
 	return c.Databases[id]
