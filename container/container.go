@@ -22,6 +22,9 @@ func (c *Container) AddDatabase(id int) {
 	c.Databases = append(c.Databases, db)
 }
 
-func (c *Container) GetAllDatabases() []*database.Cache {
-	return c.Databases
+func (c *Container) GetDatabase(id int) *database.Cache {
+	if c.Databases[id] == nil {
+		c.AddDatabase(id)
+	}
+	return c.Databases[id]
 }
