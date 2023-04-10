@@ -9,5 +9,7 @@ import (
 
 func main() {
 	parser := cli.NewParser(container.NewContainer())
-	fmt.Println(parser.StartProgrammingLoop())
+	if err := parser.StartProgrammingLoop(); err != nil {
+		fmt.Println(err)
+	}
 }

@@ -1,6 +1,8 @@
 package container
 
-import "github.com/Calgorr/Cedis/database"
+import (
+	"github.com/Calgorr/Cedis/database"
+)
 
 type Container struct {
 	Databases       []*database.Cache
@@ -23,8 +25,9 @@ func (c *Container) AddDatabase(id int) {
 }
 
 func (c *Container) GetDatabase(id int) *database.Cache {
-	if len(c.Databases) > id+1 {
+	if len(c.Databases) >= id {
 		c.AddDatabase(id)
+
 	}
 	return c.Databases[id]
 }

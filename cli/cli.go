@@ -27,7 +27,7 @@ func (p *Parser) StartProgrammingLoop() error {
 		if err != nil {
 			return err
 		}
-		fmt.Println(p.parse(strings.TrimSpace(input)))
+		p.parse(strings.TrimSpace(input))
 	}
 }
 
@@ -46,7 +46,8 @@ func (p *Parser) parse(input string) error {
 		if p.redis.CurrentDatabase == nil {
 			return errors.New("No Database selected")
 		}
-		key := strings.Split(input, " ")[0]
+		key := strings.Split(input, " ")[1]
+		fmt.Println(p.redis.CurrentDatabase.Data)
 		value, ok := p.redis.CurrentDatabase.Get(key)
 		if !ok {
 			return errors.New("Key does not exist")
@@ -56,7 +57,7 @@ func (p *Parser) parse(input string) error {
 		if p.redis.CurrentDatabase == nil {
 			return errors.New("No Database selected")
 		}
-		key := strings.Split(input, " ")[0]
+		key := strings.Split(input, " ")[1]
 		fmt.Println(p.redis.CurrentDatabase.Delete(key))
 	case "keys":
 		if p.redis.CurrentDatabase == nil {
