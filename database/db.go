@@ -1,7 +1,6 @@
 package database
 
 import (
-	"fmt"
 	"regexp"
 	"sync"
 	"time"
@@ -55,7 +54,6 @@ func (c *Cache) Get(key string) (string, bool) {
 	c.RLock()
 	defer c.RUnlock()
 	v, ok := c.Data[key]
-	fmt.Println(key, c.Data[key])
 	if !ok {
 		return "", false
 	}

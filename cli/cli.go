@@ -36,10 +36,14 @@ func (p *Parser) parse(input string) error {
 
 	switch cmd {
 	case "set":
+		var Duration string = "0h"
 		if p.redis.CurrentDatabase == nil {
 			return errors.New("No Database selected")
 		}
-		key, value, Duration := strings.Split(input, "")[0], strings.Split(input, "")[1], strings.Split(input, "")[2]
+		key, value := strings.Split(input, " ")[1], strings.Split(input, " ")[2]
+		if len(strings.Split(input, " ")) == 4 {
+			Duration = strings.Split(input, " ")[3]
+		}
 		ttl, _ := time.ParseDuration(Duration)
 		p.redis.CurrentDatabase.Set(key, value, ttl)
 	case "get":
@@ -47,7 +51,6 @@ func (p *Parser) parse(input string) error {
 			return errors.New("No Database selected")
 		}
 		key := strings.Split(input, " ")[1]
-		fmt.Println(p.redis.CurrentDatabase.Data)
 		value, ok := p.redis.CurrentDatabase.Get(key)
 		if !ok {
 			return errors.New("Key does not exist")
