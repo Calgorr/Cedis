@@ -32,7 +32,9 @@ func (p *Parser) StartProgrammingLoop() error {
 		if err != nil {
 			return err
 		}
-		p.parse(strings.Split(strings.TrimSpace(input), " "))
+		if err = p.parse(strings.Split(strings.TrimSpace(input), " ")); err != nil {
+			fmt.Println(err)
+		}
 	}
 }
 
