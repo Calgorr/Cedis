@@ -63,7 +63,7 @@ func (p *Parser) parse(input []string) error {
 		if p.redis.CurrentDatabase == nil {
 			return errors.New("No Database selected")
 		}
-		key := strings.Split(input, " ")[1]
+		key := input[1]
 		value, ok := p.redis.CurrentDatabase.Get(key)
 		if !ok {
 			return errors.New("Key does not exist")
@@ -73,20 +73,20 @@ func (p *Parser) parse(input []string) error {
 		if p.redis.CurrentDatabase == nil {
 			return errors.New("No Database selected")
 		}
-		key := strings.Split(input, " ")[1]
+		key := input[1]
 		fmt.Println(p.redis.CurrentDatabase.Delete(key))
 	case "keys":
 		if p.redis.CurrentDatabase == nil {
 			return errors.New("No Database selected")
 		}
-		pattern := strings.Split(input, " ")[1]
+		pattern := input[1]
 		keys, err := p.redis.CurrentDatabase.KeysMatchesPatern(pattern)
 		if err != nil {
 			return err
 		}
 		fmt.Println(keys)
 	case "select":
-		db, _ := strconv.Atoi(strings.Split(input, " ")[1])
+		db, _ := strconv.Atoi(input[1])
 		p.redis.CurrentDatabase = p.redis.GetDatabase(db)
 
 	case "exit":
