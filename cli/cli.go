@@ -17,6 +17,11 @@ type Parser struct {
 	reader *bufio.Reader
 }
 
+const (
+	EX = "EX"
+	PX = "PX"
+)
+
 func NewParser(c *container.Container) *Parser {
 	return &Parser{redis: c, reader: bufio.NewReader(os.Stdin)}
 }
@@ -27,24 +32,32 @@ func (p *Parser) StartProgrammingLoop() error {
 		if err != nil {
 			return err
 		}
-		p.parse(strings.TrimSpace(input))
+		p.parse(strings.Split(strings.TrimSpace(input), " "))
 	}
 }
 
-func (p *Parser) parse(input string) error {
-	cmd := strings.ToLower(strings.Split(input, " ")[0])
+func (p *Parser) parse(input []string) error {
+	cmd := input[0]
 
 	switch cmd {
 	case "set":
-		var Duration string = "0h"
+		var Duration string
 		if p.redis.CurrentDatabase == nil {
 			return errors.New("No Database selected")
 		}
-		key, value := strings.Split(input, " ")[1], strings.Split(input, " ")[2]
-		if len(strings.Split(input, " ")) == 4 {
-			Duration = strings.Split(input, " ")[3]
+		key, value := input[1], input[2]
+		if len(input) == 5 {
+			if strings.Compare(EX, input[3]) == 0 {
+				Duration = input[4] + "s"
+			} else if strings.Compare(PX, input[3]) == 0 {
+				Duration = input[4] + "ms"
+			}
 		}
-		ttl, _ := time.ParseDuration(Duration)
+		ttl, err := time.ParseDuration(Duration)
+		if err != nil {
+			ttl = 0
+			p.redis.CurrentDatabase.Set(key, value, ttl)
+		}
 		p.redis.CurrentDatabase.Set(key, value, ttl)
 	case "get":
 		if p.redis.CurrentDatabase == nil {
